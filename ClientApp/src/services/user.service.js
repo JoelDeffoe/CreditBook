@@ -2,7 +2,7 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost::4080/users/';
+const API_URL = 'http://localhost:4080/';
 
 class UserService {
   getPublicContent() {
@@ -10,7 +10,7 @@ class UserService {
   }
 
   getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+      return axios.get(API_URL + 'users', { headers: authHeader() });
   }
 }
 
