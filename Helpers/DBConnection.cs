@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CreditBook.Services;
+namespace CreditBook.Services
 {
     public class DBConnection
     {
-        private List<string> User = new List<string>();
+        /*private List<string> User = new List<string>();
         using (var con= new SqlConnection(string coaps )
         {
             string qry = "SELECT Column1 FROM Table1";
@@ -26,5 +26,6 @@ namespace CreditBook.Services;
                     }
                 }
             }
+    }*/
     }
 }

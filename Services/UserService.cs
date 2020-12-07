@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -23,18 +24,52 @@ namespace CreditBook.Services
     {
 
         //public string ConnectionString { get; set; }
-        
-        private List<User> _users = new List<User>
+
+        /*private List<User> _users = new List<User>
         {
 
             new User { Id = 1, Username = "test", Email = "User", Password = "test" }
         };
+        */
+
+        private readonly List<User> _users;
 
         private readonly AppSettings _appSettings;
 
+        private  List<User> FetchUsers()
+        {
+            List<User> _users = new List<User>();
+            string queryString = "SELECT * FROM Users";
+            using (SqlConnection con = new SqlConnection(_appSettings.Creadibookdb))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand com = new SqlCommand(queryString, con);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var User = new User();
+                        User.Ids = reader[0].ToString();
+                        User.Username = reader[1].ToString();
+                        User.Email = reader[2].ToString();
+                        User.Password = reader[3].ToString();
+
+                        _users.Add(User);
+                    }
+                }
+                catch(Exception e )
+                {
+                    Console.WriteLine(e.ToString());
+                }
+             
+                return _users.ToList();
+            }
+        }
         public UserService(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
+            _users = FetchUsers();
         }
 
         public AutResponse Aut(AutRequest model)
